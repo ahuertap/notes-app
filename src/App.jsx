@@ -14,6 +14,15 @@ function App() {
     });
   }, []);
 
+  const handleNoteChange = (id) => {
+    const note = notes.find((note) => note.id === id);
+    const changedNote = { ...note, important: !note.important };
+
+    noteService.update(id, changedNote).then((returnedNote) => {
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+    });
+  };
+
   return (
     <div className="flex flex-col content-center justify-center text-center pt-6">
       <header className="p-3">
@@ -35,6 +44,7 @@ function App() {
             key={note.id}
             content={note.content}
             isImportant={note.important}
+            toggleImportance={() => handleNoteChange(note.id)}
           />
         ))}
       </section>

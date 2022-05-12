@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Note from "./components/Note";
-import Input from "./components/Input";
+import FormNote from "./components/FormNote";
 
 import noteService from "./services/notes";
 
@@ -14,12 +14,24 @@ function App() {
     });
   }, []);
 
+  const addNote = (newNote) => {
+    noteService.create(newNote).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
+    });
+  };
+
   const handleNoteChange = (id) => {
     const note = notes.find((note) => note.id === id);
     const changedNote = { ...note, important: !note.important };
 
     noteService.update(id, changedNote).then((returnedNote) => {
       setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+    });
+  };
+
+  const handleDeleteNote = (id) => {
+    noteService.remove(id).then(() => {
+      setNotes(notes.filter((note) => note.id !== id));
     });
   };
 
@@ -32,11 +44,7 @@ function App() {
         <button className="btn-primary">Show important</button>
       </section>
       <section className="p-6">
-        <label className="text-gray-700 mr-3" htmlFor="txtNote">
-          Note:
-        </label>
-        <Input placeholder="Type your note here" type="text" id="txtNote" />
-        <button className="btn-success ml-3">Add note</button>
+        <FormNote addNote={addNote} />
       </section>
       <section className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 px-3 place-items-center">
         {notes.map((note) => (
@@ -45,6 +53,7 @@ function App() {
             content={note.content}
             isImportant={note.important}
             toggleImportance={() => handleNoteChange(note.id)}
+            toggleDelete={() => handleDeleteNote(note.id)}
           />
         ))}
       </section>

@@ -18,9 +18,9 @@ const update = async (id, note) => {
   return response.data;
 };
 
-const remove = async (id, note) => {
+const remove = async (id) => {
   const url = `${BASE_URL}/${id}`;
-  const response = await axios.delete(url, note);
+  const response = await axios.delete(url);
   return response.data;
 };
 

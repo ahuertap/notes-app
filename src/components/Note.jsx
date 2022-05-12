@@ -1,6 +1,11 @@
 import React from "react";
 
-const Note = ({ content = "Default value", isImportant, toggleImportance }) => {
+const Note = ({
+  content = "Default value",
+  isImportant,
+  toggleImportance,
+  toggleDelete,
+}) => {
   const labelButton = isImportant ? "make not important" : "make important";
 
   return (
@@ -10,7 +15,9 @@ const Note = ({ content = "Default value", isImportant, toggleImportance }) => {
         <button className="btn-purple text-xs p-1" onClick={toggleImportance}>
           {labelButton}
         </button>
-        <button className="btn-danger text-xs p-1 w-16">Delete</button>
+        <button className="btn-danger text-xs p-1 w-16" onClick={toggleDelete}>
+          Delete
+        </button>
       </div>
     </div>
   );

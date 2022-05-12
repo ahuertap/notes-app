@@ -7,6 +7,23 @@ const getAll = async () => {
   return response.data;
 };
 
-const noteService = { getAll };
+const create = async (note) => {
+  const response = await axios.post(BASE_URL, note);
+  return response.data;
+};
+
+const update = async (id, note) => {
+  const url = `${BASE_URL}/${id}`;
+  const response = await axios.put(url, note);
+  return response.data;
+};
+
+const remove = async (id, note) => {
+  const url = `${BASE_URL}/${id}`;
+  const response = await axios.delete(url, note);
+  return response.data;
+};
+
+const noteService = { getAll, update, create, remove };
 
 export default noteService;

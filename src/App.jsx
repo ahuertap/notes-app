@@ -7,6 +7,7 @@ import noteService from "./services/notes";
 
 function App() {
   const [notes, setNotes] = useState([]);
+  const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -35,19 +36,27 @@ function App() {
     });
   };
 
+  const handleShowNotes = () => {
+    setShowAll(!showAll);
+  };
+
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+
   return (
     <div className="flex flex-col content-center justify-center text-center pt-6">
       <header className="p-3">
         <h1 className="text-blue-800 text-3xl font-semibold italic">Notes</h1>
       </header>
       <section className="p-3">
-        <button className="btn-primary">Show important</button>
+        <button className="btn-primary" onClick={handleShowNotes}>
+          Show {showAll ? "important" : "all"}
+        </button>
       </section>
       <section className="p-6">
         <FormNote addNote={addNote} />
       </section>
       <section className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 px-3 place-items-center">
-        {notes.map((note) => (
+        {notesToShow.map((note) => (
           <Note
             key={note.id}
             content={note.content}
